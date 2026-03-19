@@ -83,11 +83,78 @@ interface SidebarProps {
   className?: string;
   collapsed?: boolean;
   onToggle?: () => void;
+  isMobile?: boolean;
 }
 
-export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps) {
+export function Sidebar({ className, collapsed = false, onToggle, isMobile = false }: SidebarProps) {
   const { theme, toggleTheme } = useTheme();
   const [activeItem, setActiveItem] = React.useState('dashboard');
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col h-full">
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={item.href}
+              onClick={() => {
+                setActiveItem(item.id);
+                onToggle?.();
+              }}
+              className={cn(
+                'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200',
+                'group relative overflow-hidden',
+                activeItem === item.id
+                  ? 'bg-gradient-to-r from-web3-violet/10 to-web3-indigo/10 text-web3-violet'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+              )}
+            >
+              {activeItem === item.id && (
+                <motion.div
+                  layoutId="activeNav"
+                  className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-web3-violet to-web3-indigo rounded-r-full"
+                />
+              )}
+              <span className={cn('flex-shrink-0', activeItem === item.id ? 'text-web3-violet' : '')}>
+                {item.icon}
+              </span>
+              <span className="flex-1 font-medium">{item.label}</span>
+              {item.badge && (
+                <span className="flex-shrink-0 px-2 py-0.5 text-xs font-semibold rounded-full bg-web3-violet text-white">
+                  {item.badge}
+                </span>
+              )}
+            </a>
+          ))}
+        </nav>
+
+        {/* Bottom Actions */}
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-2">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className={cn(
+              'w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-colors',
+              'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+            )}
+          >
+            {theme === 'light' ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            )}
+            <span className="font-medium">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <aside

@@ -13,11 +13,11 @@ interface AchievementTiersProps {
 }
 
 const tierColors = [
-  'from-amber-600 to-amber-400', // Bronze
-  'from-gray-400 to-gray-200', // Silver
-  'from-yellow-400 to-yellow-200', // Gold
-  'from-slate-400 to-slate-200', // Platinum
-  'from-cyan-400 to-blue-400', // Diamond
+  'from-amber-600 to-amber-400',
+  'from-gray-400 to-gray-200',
+  'from-yellow-400 to-yellow-200',
+  'from-slate-400 to-slate-200',
+  'from-cyan-400 to-blue-400',
 ];
 
 const tierBgColors = [
@@ -51,45 +51,45 @@ export function AchievementTiers({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        'bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg',
+        'bg-white dark:bg-gray-900 rounded-2xl p-4 sm:p-6 shadow-lg',
         'border border-gray-100 dark:border-gray-800',
         className
       )}
     >
       {/* Header */}
-      <div className="mb-6">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+      <div className="mb-4 sm:mb-6">
+        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
           Achievement Tiers
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
           Track your progress and unlock rewards
         </p>
       </div>
 
       {/* Current Tier Display */}
       <div className={cn(
-        'mb-6 p-4 rounded-xl',
+        'mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl',
         tierBgColors[currentTier - 1]
       )}>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className={cn(
-              'w-14 h-14 rounded-2xl flex items-center justify-center text-3xl',
+              'w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl flex-shrink-0',
               'bg-gradient-to-br',
               tierColors[currentTier - 1]
             )}>
               {tiers[currentTier - 1].icon}
             </div>
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Current Tier</p>
-              <p className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Current Tier</p>
+              <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">
                 {tierInfo.name}
               </p>
             </div>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Points</p>
-            <p className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="text-right flex-shrink-0">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Points</p>
+            <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
               {currentPoints.toLocaleString()}
             </p>
           </div>
@@ -97,16 +97,16 @@ export function AchievementTiers({
       </div>
 
       {/* Progress Bar */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <span className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
             Progress to {nextTier?.name || 'Max Tier'}
           </span>
-          <span className="text-sm font-bold text-web3-violet">
+          <span className="text-xs sm:text-sm font-bold text-web3-violet">
             {progress.toFixed(0)}%
           </span>
         </div>
-        <div className="relative h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div className="relative h-2 sm:h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
@@ -119,13 +119,13 @@ export function AchievementTiers({
         </div>
         {nextTier && (
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            {pointsToNextTier.toLocaleString()} points to {nextTier.name}
+            {pointsToNextTier.toLocaleString()} pts to {nextTier.name}
           </p>
         )}
       </div>
 
-      {/* Tier Path */}
-      <div className="space-y-2">
+      {/* Tier Path - Scrollable on mobile */}
+      <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin pr-2">
         {tiers.map((tier, index) => {
           const isUnlocked = index + 1 <= currentTier;
           const isCurrent = index + 1 === currentTier;
@@ -137,34 +137,34 @@ export function AchievementTiers({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               className={cn(
-                'flex items-center gap-3 p-3 rounded-xl transition-all',
+                'flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl transition-all',
                 isCurrent ? tierBgColors[index] : '',
                 !isUnlocked && 'opacity-50'
               )}
             >
               <div className={cn(
-                'w-10 h-10 rounded-xl flex items-center justify-center text-xl',
+                'w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-lg sm:text-xl flex-shrink-0',
                 isUnlocked
                   ? `bg-gradient-to-br ${tierColors[index]}`
                   : 'bg-gray-200 dark:bg-gray-700'
               )}>
                 {tier.icon}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p className={cn(
-                  'font-semibold',
+                  'text-sm sm:text-base font-semibold truncate',
                   isCurrent ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'
                 )}>
                   {tier.name}
                 </p>
                 {isCurrent && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate hidden sm:block">
                     {tierInfo.benefits.slice(0, 2).join(' • ')}
                   </p>
                 )}
               </div>
               {isUnlocked && (
-                <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               )}

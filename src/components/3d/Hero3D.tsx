@@ -64,10 +64,10 @@ function Scene() {
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} />
       <pointLight position={[-10, -10, -5]} intensity={0.5} color="#8B5CF6" />
-      
+
       <AnimatedCoin />
       <FloatingParticles />
-      
+
       <OrbitControls
         enableZoom={false}
         enablePan={false}
@@ -84,19 +84,19 @@ export function Hero3D({ className }: Hero3DProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1 }}
-      className={cn('relative w-full h-[400px] rounded-3xl overflow-hidden', className)}
+      className={cn('relative w-full h-[300px] sm:h-[350px] lg:h-[400px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl', className)}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-web3-violet/20 via-web3-indigo/20 to-transparent" />
       <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
         <Scene />
       </Canvas>
-      
+
       {/* Overlay Text */}
-      <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 pointer-events-none">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2 drop-shadow-lg">
           Unlock the Power of Crypto
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-200 drop-shadow-md line-clamp-2 sm:line-clamp-none">
           Manage your nodes, track earnings, and grow your portfolio
         </p>
       </div>

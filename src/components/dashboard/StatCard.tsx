@@ -25,17 +25,14 @@ export function StatCard({
   // Animate number on mount
   React.useEffect(() => {
     const numericValue = typeof value === 'number' ? value : parseFloat(value as string) || 0;
-    const duration = 1000; // 1 second
+    const duration = 1000;
     const startTime = Date.now();
     const startValue = 0;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function (ease-out-quart)
       const eased = 1 - Math.pow(1 - progress, 4);
-      
       const currentValue = startValue + (numericValue - startValue) * eased;
       setDisplayValue(currentValue);
 
@@ -61,7 +58,7 @@ export function StatCard({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02, y: -4 }}
       className={cn(
-        'relative overflow-hidden rounded-2xl p-6',
+        'relative overflow-hidden rounded-2xl p-4 sm:p-6',
         'bg-white dark:bg-gray-900 shadow-lg',
         'border border-gray-100 dark:border-gray-800'
       )}
@@ -69,7 +66,7 @@ export function StatCard({
       {/* Gradient Background Accent */}
       <div
         className={cn(
-          'absolute top-0 right-0 w-32 h-32 rounded-full opacity-10',
+          'absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 rounded-full opacity-10',
           'bg-gradient-to-br',
           gradientVariants[gradient]
         )}
@@ -77,19 +74,19 @@ export function StatCard({
       />
 
       {/* Header */}
-      <div className="relative flex items-start justify-between mb-4">
-        <div>
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
-          <div className="flex items-baseline gap-1 mt-1">
+      <div className="relative flex items-start justify-between mb-3 sm:mb-4">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{title}</p>
+          <div className="flex items-baseline gap-1 mt-1 flex-wrap">
             <motion.span
-              className="text-3xl font-bold text-gray-900 dark:text-white"
+              className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
               {typeof value === 'number' ? formatValue(displayValue) : value}
             </motion.span>
             {suffix && (
-              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              <span className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
                 {suffix}
               </span>
             )}
@@ -98,7 +95,7 @@ export function StatCard({
         {icon && (
           <div
             className={cn(
-              'w-12 h-12 rounded-xl flex items-center justify-center',
+              'w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 ml-3',
               'bg-gradient-to-br',
               gradientVariants[gradient],
               'text-white shadow-lg'
@@ -111,16 +108,16 @@ export function StatCard({
 
       {/* Trend Indicator */}
       {trend !== undefined && (
-        <div className="relative flex items-center gap-2">
+        <div className="relative flex items-center gap-1 sm:gap-2 flex-wrap">
           <span
             className={cn(
-              'flex items-center text-sm font-semibold',
+              'flex items-center text-xs sm:text-sm font-semibold',
               trend >= 0 ? 'text-green-500' : 'text-red-500'
             )}
           >
             {trend >= 0 ? '↑' : '↓'} {Math.abs(trend)}%
           </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">vs last epoch</span>
+          <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">vs last epoch</span>
         </div>
       )}
 
